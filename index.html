@@ -191,7 +191,7 @@ h1{margin:0;font:800 clamp(1.2rem,2.6vw,1.9rem)/1.15 var(--display);letter-spaci
   .prayers{grid-template-columns:1fr}
 }
 
-@media (max-width:820px),(max-height:560px){main{min-height:0;padding-bottom:1.75rem}.clock{flex:none;margin:1.5rem 0}.next{margin-top:.5rem}}  /* phones and short windows: allow scrolling */
+@media (max-width:820px),(max-height:560px){main{min-height:0;padding-bottom:3.5rem}.clock{flex:none;margin:1.5rem 0}.next{margin-top:.5rem}}  /* phones and short windows: allow scrolling */
 /* PORTRAIT DIGITAL SIGNAGE:
    Keep the same content order and alignment as the mobile layout.
    Typography and spacing may scale up for a large portrait display, but
@@ -241,7 +241,15 @@ h1{margin:0;font:800 clamp(1.2rem,2.6vw,1.9rem)/1.15 var(--display);letter-spaci
   .prayer .tag{top:1rem;right:1rem;left:auto;font-size:clamp(.75rem,1.5vw,1rem)}
 }
 /* Small credit line, bottom right (fixed, so it never changes the layout) */
-.credit{position:fixed;right:max(.6rem,env(safe-area-inset-right,0px));bottom:max(.2rem,env(safe-area-inset-bottom,0px));z-index:5;margin:0;font-size:.62rem;line-height:1;color:#6f6f6f;pointer-events:none;user-select:none}
+/* Small footer line (fixed, so it never changes the layout):
+   last updated on the left, company name in the centre, version on the right. */
+.credit{position:fixed;left:max(.6rem,env(safe-area-inset-left,0px));right:max(.6rem,env(safe-area-inset-right,0px));bottom:max(.2rem,env(safe-area-inset-bottom,0px));z-index:5;margin:0;display:grid;grid-template-columns:1fr auto 1fr;gap:.15rem 1rem;align-items:end;font-size:.65rem;line-height:1.3;color:#6f6f6f;pointer-events:none;user-select:none}
+.credit .c-l{text-align:left}.credit .c-c{text-align:center}.credit .c-r{text-align:right}
+@media (max-width:760px){  /* narrow screens: stack the three items in the centre */
+  .credit{grid-template-columns:1fr}
+  .credit span{text-align:center}.credit span:empty{display:none}
+  .credit .c-c{order:1}.credit .c-r{order:2}.credit .c-l{order:3}
+}
 :focus-visible{outline:3px solid var(--gold);outline-offset:3px}  /* visible focus ring for keyboard users */
 @media (prefers-reduced-motion:reduce){*{transition:none!important}} /* respect the "reduce motion" setting */
 </style>
@@ -298,7 +306,9 @@ h1{margin:0;font:800 clamp(1.2rem,2.6vw,1.9rem)/1.15 var(--display);letter-spaci
 
 </main>
 
-<p class="credit">Copyright © - Bangladesh-China Power Company Ltd. (BCPCL)</p>
+<!-- Small footer line: last updated (left), company name (centre), version (right).
+     Last updated and version come from SETTINGS. -->
+<p class="credit"><span class="c-l" id="upd"></span><span class="c-c">Bangladesh-China Power Company Ltd. (BCPCL)</span><span class="c-r" id="ver"></span></p>
 
 <script>
 /* ==============================================================
@@ -376,7 +386,13 @@ var SETTINGS = {
     // true  = Asr ends when the sunset forbidden time starts (the Asr card then matches the notice)
     // false = Asr lasts until sunset (some scholars allow the same-day Asr until then)
     asrEndsAtForbidden: true
-  }
+  },
+
+  /* ---- 9. Version information ----------------------------------- */
+  // Shown in the small line at the bottom: last updated on the left, version on the right.
+  // Change both lines each time you publish a new version. Leave a line empty ("") to hide it.
+  version: "1.3",                                     // shown as "Version: 1.3"
+  lastUpdated: "09:42 AM \u00b7 Wednesday \u00b7 18 November 2026"    // time, weekday, date
 };
 /* ==============================================================
    END OF SETTINGS. You do not need to change anything below.
@@ -555,6 +571,8 @@ var SETTINGS = {
   }
 
   /* ---------- Static text ---------- */
+  $("ver").textContent = S.version ? "Version: " + S.version : "";                       // bottom right
+  $("upd").textContent = S.lastUpdated ? "Last updated: " + S.lastUpdated : "";          // bottom left
   $("place").textContent = S.placeName;
   if ($("company")) $("company").textContent = S.companyName;   // skipped when the logo option is used
   var logo = document.querySelector(".logo");
