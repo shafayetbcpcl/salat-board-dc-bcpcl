@@ -65,21 +65,23 @@ main{position:relative;z-index:1;max-width:1500px;margin:0 auto;padding:clamp(.7
 header{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:.9rem clamp(1rem,2.5vw,2.5rem);padding:.25rem 0}
 h1{margin:0;font:800 clamp(1.2rem,2.6vw,1.9rem)/1.15 var(--display);letter-spacing:-.01em}
 .brand{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:0}
-.logo{display:block;height:clamp(13rem, 25vh, 20rem);aspect-ratio:2/3;width:auto;max-width:min(20vw,9rem);object-fit:contain} /* centered, slightly larger logo */
+.logo{display:block;height:clamp(11rem, 25vh, 20rem);aspect-ratio:2/3;width:auto;max-width:min(20vw,9rem);object-fit:contain} /* centered, slightly larger logo */
 .place{margin:.35rem 0 0;font-size:.98rem;color:var(--muted)}
-.suns{display:flex;flex-wrap:wrap;row-gap:.65rem;justify-content:flex-start;align-items:center;gap:clamp(.8rem,2vw,1.8rem);text-align:left;min-width:0}
+.suns{display:flex;flex-wrap:wrap;row-gap:.35rem;justify-content:flex-start;align-items:center;gap:clamp(.8rem,2vw,1.8rem);text-align:left;min-width:0}
 .sun-item{display:grid;grid-template-columns:auto 1fr;align-items:center;column-gap:.55rem}
 .sun-icon{width:clamp(1.35rem,2.2vw,1.9rem);height:clamp(1.35rem,2.2vw,1.9rem);color:var(--gold);flex:none}
 .sun-copy span{display:block;font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--gold)}
 .suns b{display:block;margin-top:.2rem;font:800 clamp(1rem,1.8vw,1.45rem)/1 var(--display);font-variant-numeric:tabular-nums;color:var(--ink);white-space:nowrap}
 /* INFO BOARD (under sunrise and sunset): status chips + Nafl prayer times */
-.info-board{flex:0 0 100%;min-width:0}
+.suns .break{flex:0 0 100%;height:0}   /* line break inside the sunrise/sunset block */
 .status{display:flex;flex-wrap:wrap;gap:.35rem .5rem;align-items:center}
 .status:empty{display:none}
 .chip{font-size:.74rem;font-weight:600;letter-spacing:.02em;padding:.2rem .75rem;border:1px solid;border-radius:99px;white-space:nowrap;line-height:1.35}
 .chip.major{color:var(--gold);border-color:var(--gold-dim);background:rgba(232,200,115,.08)}   /* Major Salat time */
 .chip.nafl{color:var(--ink);border-color:var(--line-2);background:rgba(255,255,255,.05)}       /* Nafl prayer time */
 .chip.forb{color:#ffa58a;border-color:#7a3b2c;background:rgba(255,120,90,.08)}                 /* Forbidden time */
+.next .status{justify-content:center;margin:0 0 .45rem}                                        /* chips sit between the clock and the countdown */
+.next .chip{font-size:clamp(.8rem,1.5vw,1.05rem);padding:.25rem .9rem}
 
 .dates{text-align:right;justify-self:end;min-width:0}
 .dates p{margin:0;font-size:clamp(.85rem,1.3vw,1rem);line-height:1.35;color:var(--muted)}
@@ -166,7 +168,7 @@ h1{margin:0;font:800 clamp(1.2rem,2.6vw,1.9rem)/1.15 var(--display);letter-spaci
    ------------------------------------------------------------ */
 .prayers{
   list-style:none;margin:0;padding:0;display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(min(100%,185px),1fr));
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));
   gap:clamp(.65rem,1.6vw,1.1rem);
 }
 .prayer{
@@ -208,7 +210,7 @@ h1{margin:0;font:800 clamp(1.2rem,2.6vw,1.9rem)/1.15 var(--display);letter-spaci
   main{
     min-height:calc(100vh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));
     min-height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));
-    padding:clamp(1rem,2.5vh,2.5rem) 4vw
+    padding:clamp(.8rem,1.6vh,2rem) 4vw
   }
   header{
     grid-template-columns:1fr;
@@ -220,8 +222,8 @@ h1{margin:0;font:800 clamp(1.2rem,2.6vw,1.9rem)/1.15 var(--display);letter-spaci
   .brand{grid-area:brand;align-items:center}
   h1{font-size:clamp(1.6rem,5.2vw,3.4rem)}
   .place{font-size:clamp(1rem,2.4vw,1.6rem)}
-  .logo{height:clamp(6rem,10vh,11rem);max-width:30vw}
-  .suns{grid-area:suns;justify-self:center;justify-content:center;gap:clamp(1.25rem,8vw,5rem)}
+  .logo{height:clamp(6rem,9.5vh,11rem);max-width:30vw}
+  .suns{grid-area:suns;justify-self:center;justify-content:center;column-gap:clamp(1.25rem,8vw,5rem);row-gap:clamp(.4rem,1vh,1rem)}
   .sun-item{column-gap:.5rem}
   .sun-icon{width:clamp(1.25rem,2.2vw,2rem);height:clamp(1.25rem,2.2vw,2rem)}
   .suns span{font-size:clamp(.85rem,2.2vw,1.3rem)}
@@ -229,24 +231,25 @@ h1{margin:0;font:800 clamp(1.2rem,2.6vw,1.9rem)/1.15 var(--display);letter-spaci
   .dates{grid-area:dates;justify-self:center;text-align:center}
   .dates p{font-size:clamp(1rem,2.8vw,1.7rem)}
   .dates p+p{font-size:clamp(.95rem,2.6vw,1.55rem)}
-  .clock{--fs:clamp(2.4rem,min(15vw,12vh),16rem);flex:1 1 auto;margin:1vh 0}
-  .next{margin-bottom:2vh}
+  .clock{--fs:clamp(2.4rem,min(13.5vw,11vh),16rem);flex:1 1 auto;margin:.7vh 0}
+  .next{margin-bottom:1.4vh}
   .next p{font-size:clamp(1.3rem,4vw,2.6rem);margin-bottom:1.2vh}
   .bar{max-width:80%;height:6px}
-  .suns .info-board{text-align:center}.suns .status{justify-content:center}.suns .chip{font-size:clamp(.9rem,2.3vw,1.4rem)}
+  .next .chip{font-size:clamp(1rem,2.6vw,1.6rem);padding:.3rem 1.1rem}
   .prayers{
     flex:1.6 1 auto;
     grid-template-columns:1fr;grid-auto-rows:1fr;
-    gap:1.2vh
+    gap:1vh
   }
-  /* Match the mobile card structure: title, Jamat label/time, then details. */
-  .prayer{display:block;align-content:initial;padding:clamp(.75rem,1.5vh,1.25rem) clamp(1rem,3vw,2rem)}
-  .prayer h2{margin:0 0 .5rem;font-size:clamp(1.3rem,3.2vw,2.2rem)}
-  .prayer .lbl{margin:0 0 .15rem;font-size:clamp(.8rem,1.9vw,1.2rem)}
-  .prayer .t{font-size:clamp(2rem,5vw,3.8rem)}
+  /* Card layout in portrait: name, Jamat label and time on the left; Start / Ends / Lasts on the right.
+     This keeps all five cards on one screen without scrolling. */
+  .prayer{display:grid;grid-template-columns:1fr 1fr auto;grid-template-areas:"name info tag" "lbl info tag" "time info tag";align-items:center;align-content:center;padding:clamp(.6rem,1.2vh,1rem) clamp(1rem,3vw,2rem)}
+  .prayer h2{grid-area:name;margin:0 0 .3rem;padding-right:0;font-size:clamp(1.3rem,3.2vw,2.2rem)}
+  .prayer .lbl{grid-area:lbl;margin:0 0 .1rem;font-size:clamp(.8rem,1.9vw,1.2rem)}
+  .prayer .t{grid-area:time;font-size:clamp(2rem,5vw,3.8rem)}
   .prayer .t small{font-size:.9rem}
-  .prayer .info{margin-top:.7rem;padding-top:.6rem;border-top:1px solid var(--line);border-left:0;font-size:clamp(.9rem,1.8vw,1.25rem)}
-  .prayer .tag{top:1rem;right:1rem;left:auto;font-size:clamp(.75rem,1.5vw,1rem)}
+  .prayer .info{grid-area:info;margin:0;padding:0 clamp(1rem,4vw,3rem);border-top:0;border-left:1px solid var(--line);font-size:clamp(.9rem,1.8vw,1.25rem)}
+  .prayer .tag{grid-area:tag;position:static;align-self:start;justify-self:end;margin-left:.75rem;font-size:clamp(.75rem,1.5vw,1rem)}
 }
 /* Small credit line, bottom right (fixed, so it never changes the layout) */
 /* Small footer line (fixed, so it never changes the layout):
@@ -268,7 +271,7 @@ h1{margin:0;font:800 clamp(1.2rem,2.6vw,1.9rem)/1.15 var(--display);letter-spaci
 
   <!-- Header: sunrise/sunset left, BCPCL logo centered, date and location right -->
   <header>
-    <div class="suns" aria-label="Sunrise and sunset">
+    <div class="suns" aria-label="Sunrise, sunset, end of Sahri and Iftar">
       <div class="sun-item">
         <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18h18M5 15a7 7 0 0 1 14 0M12 2v3M4.9 6.9 7 9M19.1 6.9 17 9"/></svg>
         <div class="sun-copy"><span>Sunrise</span><b id="sunrise">--</b></div>
@@ -278,9 +281,18 @@ h1{margin:0;font:800 clamp(1.2rem,2.6vw,1.9rem)/1.15 var(--display);letter-spaci
         <div class="sun-copy"><span>Sunset</span><b id="sunset">--</b></div>
       </div>
 
-      <!-- Info board: short chips showing what kind of time it is right now -->
-      <div class="info-board">
-        <div class="status" id="statusHd"></div>
+      <span class="break" aria-hidden="true"></span>   <!-- starts a new line: End of Sahri and Iftar go under sunrise and sunset -->
+
+      <!-- End of Sahri (moon icon) -->
+      <div class="sun-item" id="sahriBox">
+        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.3 6.3 0 0 0 10.5 10.5z"/></svg>
+        <div class="sun-copy"><span>End of Sahri</span><b id="sahri">--</b></div>
+      </div>
+
+      <!-- Iftar (bowl icon) -->
+      <div class="sun-item" id="iftarBox">
+        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11h18a9 9 0 0 1-18 0zM9 7.5c0-1.6 1-2 1-3.5M14 7.5c0-1.6 1-2 1-3.5"/></svg>
+        <div class="sun-copy"><span>Iftar</span><b id="iftar">--</b></div>
       </div>
     </div>
 
@@ -309,6 +321,8 @@ h1{margin:0;font:800 clamp(1.2rem,2.6vw,1.9rem)/1.15 var(--display);letter-spaci
 
   <!-- Countdown to the next prayer and a thin progress bar -->
   <section class="next">
+    <!-- Status chips between the clock and the countdown: Major Salat / Nafl prayer / Forbidden time -->
+    <div class="status" id="statusNx"></div>
     <p id="nextLine">&nbsp;</p>
     <div class="bar" aria-hidden="true"><div id="prog"></div></div>
   </section>
@@ -405,11 +419,19 @@ var SETTINGS = {
   // chip and in the status line under the clock. Set show to false to hide them.
   nafl: { show: true },
 
-  /* ---- 10. Footer line ------------------------------------------- */
+  /* ---- 10. End of Sahri and Iftar -------------------------------- */
+  // Shown under sunrise and sunset, and worked out again every day.
+  //   End of Sahri = Fajr start minus "minutesBefore".     Iftar = Maghrib (sunset) start plus "minutesAfter".
+  // Many local timetables end Sahri a few minutes before Fajr and start Iftar a minute or two after
+  // sunset. Enter those minutes to match your timetable. Set show to false to hide an item.
+  sahri: { show: true, minutesBefore: 0 },
+  iftar: { show: true, minutesAfter: 0 },
+
+  /* ---- 11. Footer line ------------------------------------------- */
   // Small line at the bottom of the page. Leave a value empty ("") to hide it.
   developedBy: "BCPCL ICT",                                       // bottom left:  "Developed by BCPCL ICT"
-  version: "1.5",                                                 // bottom right: "Version: 1.5 (...)"
-  lastUpdated: "02:09 PM \u00b7 Sunday \u00b7 22 November 2026"     // date of this version, shown in brackets after the version
+  version: "1.6",                                                 // bottom right: "Version: 1.6 (...)"
+  lastUpdated: "03:33 PM \u00b7 Sunday \u00b7 22 November 2026"     // date of this version, shown in brackets after the version
 };
 /* ==============================================================
    END OF SETTINGS. You do not need to change anything below.
@@ -599,10 +621,10 @@ var SETTINGS = {
   // Which Nafl time is running at hour x? Returns {name, from, to} or null. Also works after midnight (Tahajjud).
   function naflNow(x){
     var r = null;
-    [["Duha", N.duha], ["Awwabin", N.awwabin], ["Tahajjud", N.tahajjud]].forEach(function(p){
+    [["Duha", N.duha, "Ishraq, Chasht & Duha"], ["Awwabin", N.awwabin, "Awwabin"], ["Tahajjud", N.tahajjud, "Tahajjud"]].forEach(function(p){   // short name, times, full name (for the chip)
       [0, -24].forEach(function(shift){
         var a = p[1].from + shift, b = p[1].to + shift;
-        if (x >= a && x < b) r = { name: p[0], from: a, to: b };
+        if (x >= a && x < b) r = { name: p[0], full: p[2], from: a, to: b };
       });
     });
     return r;
@@ -733,6 +755,13 @@ var SETTINGS = {
 
     $("sunrise").textContent = label(T.sunrise);
     $("sunset").textContent = label(T.sunset);
+
+    // End of Sahri and Iftar (under sunrise and sunset)
+    var sc = S.sahri || {}, ic = S.iftar || {};
+    $("sahriBox").style.display = sc.show === false ? "none" : "";
+    $("iftarBox").style.display = ic.show === false ? "none" : "";
+    $("sahri").textContent = label(T.fajr - (+sc.minutesBefore || 0) / 60);
+    $("iftar").textContent = label(T.maghrib + (+ic.minutesAfter || 0) / 60);
     $("apTile").style.display = use24 ? "none" : "";           // hide AM/PM tile in 24-hour mode
     lastSig = "";                                               // force the card states to refresh
   }
@@ -769,14 +798,15 @@ var SETTINGS = {
     var nowH = H + M / 60 + Sx / 3600, fb = null;
     F.forEach(function(w){ if (nowH >= w.from && nowH < w.to) fb = w; });
 
-    // Status chips (under sunrise and sunset): which kind of time it is now
+    // Status chips (between the clock and the countdown): which kind of time it is now
     function inRange(a, b, x){ return (x >= a && x < b) || (x + 24 >= a && x + 24 < b); }   // also works after midnight
-    var major = KEYS.some(function(k){ return inRange(T[k], E[k], nowH); }),
-        nafl  = naflOn && (inRange(N.duha.from, N.duha.to, nowH) || inRange(N.awwabin.from, N.awwabin.to, nowH) || inRange(N.tahajjud.from, N.tahajjud.to, nowH)),
-        chips = (major ? '<span class="chip major">Major Salat time</span>' : "") +
-                (nafl  ? '<span class="chip nafl">Nafl prayer time</span>' : "") +
-                (fb    ? '<span class="chip forb">Forbidden time</span>' : "");
-    if (chips !== lastChips) { lastChips = chips; $("statusHd").innerHTML = chips; }
+    var majorKey = KEYS.filter(function(k){ return inRange(T[k], E[k], nowH); })[0],   // which major salat is running (if any)
+        nfx   = naflOn ? naflNow(nowH) : null,                                              // which Nafl time is running (if any)
+        // Each chip shows the specific name: major salat (gold), Nafl (white), forbidden time (red)
+        chips = (majorKey ? '<span class="chip major">' + NAMES[majorKey] + '</span>' : "") +
+                (nfx      ? '<span class="chip nafl">' + nfx.full.replace("&", "&amp;") + '</span>' : "") +
+                (fb       ? '<span class="chip forb">Forbidden &middot; ' + fb.name + '</span>' : "");
+    if (chips !== lastChips) { lastChips = chips; $("statusNx").innerHTML = chips; }
 
     if (!visible.length) { $("nextLine").innerHTML = "&nbsp;"; $("prog").style.width = "0"; return; }
 
