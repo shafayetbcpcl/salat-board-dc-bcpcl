@@ -67,11 +67,20 @@ h1{margin:0;font:800 clamp(1.2rem,2.6vw,1.9rem)/1.15 var(--display);letter-spaci
 .brand{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:0}
 .logo{display:block;height:clamp(13rem, 25vh, 20rem);aspect-ratio:2/3;width:auto;max-width:min(20vw,9rem);object-fit:contain} /* centered, slightly larger logo */
 .place{margin:.35rem 0 0;font-size:.98rem;color:var(--muted)}
-.suns{display:flex;justify-content:flex-start;align-items:center;gap:clamp(.8rem,2vw,1.8rem);text-align:left;min-width:0}
+.suns{display:flex;flex-wrap:wrap;row-gap:.65rem;justify-content:flex-start;align-items:center;gap:clamp(.8rem,2vw,1.8rem);text-align:left;min-width:0}
 .sun-item{display:grid;grid-template-columns:auto 1fr;align-items:center;column-gap:.55rem}
 .sun-icon{width:clamp(1.35rem,2.2vw,1.9rem);height:clamp(1.35rem,2.2vw,1.9rem);color:var(--gold);flex:none}
 .sun-copy span{display:block;font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--gold)}
 .suns b{display:block;margin-top:.2rem;font:800 clamp(1rem,1.8vw,1.45rem)/1 var(--display);font-variant-numeric:tabular-nums;color:var(--ink);white-space:nowrap}
+/* INFO BOARD (under sunrise and sunset): status chips + Nafl prayer times */
+.info-board{flex:0 0 100%;min-width:0}
+.status{display:flex;flex-wrap:wrap;gap:.35rem .5rem;align-items:center}
+.status:empty{display:none}
+.chip{font-size:.74rem;font-weight:600;letter-spacing:.02em;padding:.2rem .75rem;border:1px solid;border-radius:99px;white-space:nowrap;line-height:1.35}
+.chip.major{color:var(--gold);border-color:var(--gold-dim);background:rgba(232,200,115,.08)}   /* Major Salat time */
+.chip.nafl{color:var(--ink);border-color:var(--line-2);background:rgba(255,255,255,.05)}       /* Nafl prayer time */
+.chip.forb{color:#ffa58a;border-color:#7a3b2c;background:rgba(255,120,90,.08)}                 /* Forbidden time */
+
 .dates{text-align:right;justify-self:end;min-width:0}
 .dates p{margin:0;font-size:clamp(.85rem,1.3vw,1rem);line-height:1.35;color:var(--muted)}
 .dates p+p{margin-top:.2rem;font-size:clamp(.82rem,1.2vw,.95rem)}
@@ -144,13 +153,12 @@ h1{margin:0;font:800 clamp(1.2rem,2.6vw,1.9rem)/1.15 var(--display);letter-spaci
 .next{text-align:center;margin:0 0 clamp(.75rem,2vh,1.5rem)}
 .next p{margin:0 0 .6rem;font-size:clamp(1rem,2.2vw,1.4rem);font-weight:600;color:var(--muted)}
 .next b{font:800 1em var(--display);font-variant-numeric:tabular-nums;color:var(--ink);margin-left:.15em}
+.next p.forb{color:#ffa58a}.next p.forb b{color:#ffd0c2}   /* status line while it is a forbidden time */
+.next p.nafl{color:var(--ink)}                              /* status line while it is a Nafl time */
+@media (min-width:561px){.next p{white-space:nowrap}}       /* keep the status line on ONE line */
 .bar{height:4px;max-width:560px;margin:0 auto;border-radius:2px;background:#1c1c1c;overflow:hidden}
 .bar div{height:100%;width:0;background:linear-gradient(90deg,var(--gold-dim),var(--gold));border-radius:2px;transition:width .4s linear}
 
-/* FORBIDDEN TIME NOTICE: shown only while it is a makruh (forbidden) time for prayer */
-.forbid{display:none;width:max-content;max-width:100%;margin:0 auto .75rem;padding:.35rem 1.1rem;border:1px solid #7a3b2c;border-radius:99px;background:rgba(255,120,90,.08);color:#ffa58a;font-weight:600;font-size:clamp(.9rem,1.8vw,1.2rem);line-height:1.35;text-align:center}
-.forbid.on{display:block}
-.forbid b{font:800 1em var(--display);font-variant-numeric:tabular-nums;color:#ffd0c2}
 
 /* ------------------------------------------------------------
    PRAYER CARDS
@@ -225,7 +233,7 @@ h1{margin:0;font:800 clamp(1.2rem,2.6vw,1.9rem)/1.15 var(--display);letter-spaci
   .next{margin-bottom:2vh}
   .next p{font-size:clamp(1.3rem,4vw,2.6rem);margin-bottom:1.2vh}
   .bar{max-width:80%;height:6px}
-  .forbid{font-size:clamp(1.1rem,3vw,1.9rem)}
+  .suns .info-board{text-align:center}.suns .status{justify-content:center}.suns .chip{font-size:clamp(.9rem,2.3vw,1.4rem)}
   .prayers{
     flex:1.6 1 auto;
     grid-template-columns:1fr;grid-auto-rows:1fr;
@@ -269,6 +277,11 @@ h1{margin:0;font:800 clamp(1.2rem,2.6vw,1.9rem)/1.15 var(--display);letter-spaci
         <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18h18M5 15a7 7 0 0 1 14 0M12 3v5M4.9 8.9 7 11M19.1 8.9 17 11"/><path d="m8 21 4-3 4 3"/></svg>
         <div class="sun-copy"><span>Sunset</span><b id="sunset">--</b></div>
       </div>
+
+      <!-- Info board: short chips showing what kind of time it is right now -->
+      <div class="info-board">
+        <div class="status" id="statusHd"></div>
+      </div>
     </div>
 
     <div class="brand">
@@ -296,7 +309,6 @@ h1{margin:0;font:800 clamp(1.2rem,2.6vw,1.9rem)/1.15 var(--display);letter-spaci
 
   <!-- Countdown to the next prayer and a thin progress bar -->
   <section class="next">
-    <div class="forbid" id="forbid" role="status"></div>
     <p id="nextLine">&nbsp;</p>
     <div class="bar" aria-hidden="true"><div id="prog"></div></div>
   </section>
@@ -388,11 +400,16 @@ var SETTINGS = {
     asrEndsAtForbidden: true
   },
 
-  /* ---- 9. Footer line ------------------------------------------- */
+  /* ---- 9. Nafl prayer times ------------------------------------- */
+  // Nafl (voluntary) times: Ishraq, Chasht & Duha, Awwabin and Tahajjud. They show as the "Nafl prayer time"
+  // chip and in the status line under the clock. Set show to false to hide them.
+  nafl: { show: true },
+
+  /* ---- 10. Footer line ------------------------------------------- */
   // Small line at the bottom of the page. Leave a value empty ("") to hide it.
   developedBy: "BCPCL ICT",                                       // bottom left:  "Developed by BCPCL ICT"
-  version: "1.4",                                                 // bottom right: "Version: 1.4 (...)"
-  lastUpdated: "03:58 PM \u00b7 Thursday \u00b7 19 November 2026"     // date of this version, shown in brackets after the version
+  version: "1.5",                                                 // bottom right: "Version: 1.5 (...)"
+  lastUpdated: "02:09 PM \u00b7 Sunday \u00b7 22 November 2026"     // date of this version, shown in brackets after the version
 };
 /* ==============================================================
    END OF SETTINGS. You do not need to change anything below.
@@ -405,6 +422,7 @@ var SETTINGS = {
   S.offsetsMin = S.offsetsMin || {};
   S.fixedTimes = S.fixedTimes || {};
   S.jamat = S.jamat || {};
+  var naflOn = !(S.nafl && S.nafl.show === false);   // show Nafl times (chip and status line)?
   var KEYS = ["fajr","dhuhr","asr","maghrib","isha"];  // the five prayers in order
   var NAMES = {fajr:"Fajr", dhuhr:"Dhuhr", asr:"Asr", maghrib:"Maghrib", isha:"Isha"};
   var $ = function(id){ return document.getElementById(id); };  // short way to find an element
@@ -428,6 +446,13 @@ var SETTINGS = {
   function dur(hours){
     var m = Math.max(0, Math.round(hours * 60)), h = Math.floor(m / 60);
     return (h ? h + "h " : "") + (m % 60) + "m";
+  }
+
+  // Turn a number of seconds into text like "1h 05m 09s".
+  function cd(sec){
+    sec = Math.max(0, sec);
+    var h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60);
+    return (h ? h + "h " : "") + two(m) + "m " + two(sec % 60) + "s";
   }
 
   // Read a "HH:MM" text (24-hour clock) and return hours (13.25 = 13:15).
@@ -504,6 +529,7 @@ var SETTINGS = {
     var asrAngle = -Math.atan(1 / (S.asrFactor + Math.tan(Math.abs(lat - p.decl)))) / R;
 
     var t = {
+      noon:    noon,                     // solar noon (used for "Zawal begins")
       sunrise: noon - T(0.833),
       fajr:    noon - T(S.fajrAngle),
       dhuhr:   noon + 1 / 60,            // one minute after solar noon
@@ -533,9 +559,9 @@ var SETTINGS = {
 
   /* ---------- Forbidden (makruh) times ----------
      Returns the three periods of the day when prayer is not allowed, as {name, from, to} in hours. */
-  function forbiddenWindows(){
+  function forbiddenWindows(all){
     var f = S.forbidden || {};
-    if (f.show === false) return [];
+    if (f.show === false && !all) return [];   // all = true: still return the windows (used for the Nafl times)
     function mins(v, d){ v = +v; return (isNaN(v) || v < 0) ? d : v; }   // bad value: use the default
     var a = mins(f.sunriseMin, 15), z = mins(f.zenithMin, 6), u = mins(f.sunsetMin, 15);
     return [
@@ -550,6 +576,36 @@ var SETTINGS = {
   function adjustAsrEnd(){
     if ((S.forbidden || {}).asrEndsAtForbidden === false) return;
     F.forEach(function(w){ if (w.name === "Sunset" && w.from > T.asr) E.asr = w.from; });
+  }
+
+  /* ---------- Nafl (voluntary) prayer times ----------
+     Worked out from today's prayer times, so they update automatically every day.
+       Ishraq, Chasht & Duha : after the sunrise forbidden time ends, until the zenith forbidden time begins
+       Zawal begins          : solar noon
+       Awwabin               : after Maghrib, until Isha begins
+       Tahajjud              : after Isha, until Fajr begins. The last third of the night is also shown. */
+  function naflTimes(){
+    var f = S.forbidden || {};
+    function m(v, d){ v = +v; return (isNaN(v) || v < 0) ? d : v; }              // same minutes as the forbidden times
+    var fajrNext = TN.fajr + 24, night = fajrNext - T.maghrib;                    // the night: Maghrib to the next Fajr
+    return {
+      duha:     { from: T.sunrise + m(f.sunriseMin, 15) / 60, to: T.dhuhr - m(f.zenithMin, 6) / 60 },
+      zawal:    T.noon,
+      awwabin:  { from: T.maghrib, to: T.isha },
+      tahajjud: { from: T.isha, to: fajrNext, third: fajrNext - night / 3 }
+    };
+  }
+
+  // Which Nafl time is running at hour x? Returns {name, from, to} or null. Also works after midnight (Tahajjud).
+  function naflNow(x){
+    var r = null;
+    [["Duha", N.duha], ["Awwabin", N.awwabin], ["Tahajjud", N.tahajjud]].forEach(function(p){
+      [0, -24].forEach(function(shift){
+        var a = p[1].from + shift, b = p[1].to + shift;
+        if (x >= a && x < b) r = { name: p[0], from: a, to: b };
+      });
+    });
+    return r;
   }
 
   /* ---------- Build the prayer cards once ----------
@@ -652,7 +708,7 @@ var SETTINGS = {
     setDigit(g.ds[0], str.charAt(0)); setDigit(g.ds[1], str.charAt(1));
   }
 
-  var dayKey = "", lastMin = -1, T = null, TN = null, E = null, F = [], lastSig = "";
+  var dayKey = "", lastMin = -1, T = null, TN = null, E = null, F = [], N = null, lastSig = "", lastChips = "";
 
   /* ---------- Fill in the times, jamat and duration on each card ----------
      Runs when the day changes or when you switch 12/24-hour time. */
@@ -681,7 +737,7 @@ var SETTINGS = {
     lastSig = "";                                               // force the card states to refresh
   }
 
-  /* ---------- Runs four times a second ---------- */
+  /* ---------- Runs once a second ---------- */
   function tick(){
     // "Now" in your chosen time zone (independent of the device time zone)
     var n = new Date(Date.now() + offsetAt(Date.now()) * 3600000),
@@ -695,7 +751,7 @@ var SETTINGS = {
       T = compute(y, mo, d);
       TN = compute(y, mo, d + 1);
       E = { fajr: T.sunrise, dhuhr: T.asr, asr: T.maghrib, maghrib: T.isha, isha: TN.fajr + 24 };   // when each prayer ends
-      F = forbiddenWindows(); adjustAsrEnd();                                                                         // forbidden times for today
+      F = forbiddenWindows(); N = naflTimes(); adjustAsrEnd();                                                                         // forbidden times for today
       if (showEn) $("date").textContent = DAYS[n.getUTCDay()] + ", " + d + " " + MONTHS[mo] + " " + y;
       if (showBn) $("dateBn").textContent = DAYS_BN[n.getUTCDay()] + ", " + bnDate(y, mo, d);   // weekday first, then the Bangla date
       if (showAr) $("dateHb").textContent = hijri(y, mo, d) || "";
@@ -709,14 +765,18 @@ var SETTINGS = {
     if (M !== lastMin) { lastMin = M; $("srTime").textContent = label(H + M / 60); }   // for screen readers
     $("ap").textContent = H < 12 ? "AM" : "PM";
 
-    // Forbidden time notice: shown only while one of the three periods is running
-    var nowH = H + M / 60 + Sx / 3600, fb = null, box = $("forbid");
+    // Which forbidden time is running right now (if any)
+    var nowH = H + M / 60 + Sx / 3600, fb = null;
     F.forEach(function(w){ if (nowH >= w.from && nowH < w.to) fb = w; });
-    if (fb) {
-      var fl = Math.max(0, Math.round((fb.to - nowH) * 3600)), fh = Math.floor(fl / 3600);
-      box.innerHTML = "Forbidden time to pray: " + fb.name + " &middot; ends in <b>" + (fh ? fh + "h " : "") + two(Math.floor(fl % 3600 / 60)) + "m " + two(fl % 60) + "s</b>";
-      box.className = "forbid on";
-    } else if (box.className !== "forbid") { box.className = "forbid"; box.textContent = ""; }
+
+    // Status chips (under sunrise and sunset): which kind of time it is now
+    function inRange(a, b, x){ return (x >= a && x < b) || (x + 24 >= a && x + 24 < b); }   // also works after midnight
+    var major = KEYS.some(function(k){ return inRange(T[k], E[k], nowH); }),
+        nafl  = naflOn && (inRange(N.duha.from, N.duha.to, nowH) || inRange(N.awwabin.from, N.awwabin.to, nowH) || inRange(N.tahajjud.from, N.tahajjud.to, nowH)),
+        chips = (major ? '<span class="chip major">Major Salat time</span>' : "") +
+                (nafl  ? '<span class="chip nafl">Nafl prayer time</span>' : "") +
+                (fb    ? '<span class="chip forb">Forbidden time</span>' : "");
+    if (chips !== lastChips) { lastChips = chips; $("statusHd").innerHTML = chips; }
 
     if (!visible.length) { $("nextLine").innerHTML = "&nbsp;"; $("prog").style.width = "0"; return; }
 
@@ -738,11 +798,19 @@ var SETTINGS = {
     var nextIdx = 0, nextStart = TN[visible[0]] + 24;
     for (i = 0; i < nv; i++) { if (T[visible[i]] > now) { nextIdx = i; nextStart = T[visible[i]]; break; } }
 
-    var line;
-    if (cur !== -1) {
+    // ONE status line. Which status is shown (in this order of preference):
+    //   1. Forbidden time   2. Major salat (Fajr, Dhuhr, Asr, Maghrib, Isha)   3. Nafl time   4. Gap before the next prayer
+    var line, lineClass = "", nf = naflOn ? naflNow(now) : null;
+    if (fb) {
+      line = "Forbidden time (" + fb.name + ") ends in ";
+      from = fb.from; to = fb.to; lineClass = "forb";
+    } else if (cur !== -1) {
       line = NAMES[visible[cur]] + " ends in ";
+    } else if (nf) {
+      line = "Nafl time (" + nf.name + ") ends in ";
+      from = nf.from; to = nf.to; lineClass = "nafl";
     } else {
-      // Between two prayer periods (for example after sunrise): count down to the next start
+      // Between two prayer periods: count down to the next start
       line = "No prayer time now. " + NAMES[visible[nextIdx]] + " starts in ";
       to = nextStart; from = to - 24;
       KEYS.forEach(function(q){ [ends[q], ends[q] - 24].forEach(function(e){ if (e <= now && e > from) from = e; }); });   // also checks yesterday's ends (after midnight)
@@ -751,7 +819,8 @@ var SETTINGS = {
     // Countdown text and progress bar (how much of the present period has passed)
     var left = Math.max(0, Math.round((to - now) * 3600)),
         h = Math.floor(left / 3600), m = Math.floor(left % 3600 / 60), s = left % 60;
-    $("nextLine").innerHTML = line + "<b>" + (h ? h + "h " : "") + two(m) + "m " + two(s) + "s</b>";
+    $("nextLine").className = lineClass;
+    $("nextLine").innerHTML = line + "<b>" + cd(left) + "</b>";
     $("prog").style.width = Math.max(0, Math.min(100, (now - from) / (to - from) * 100)).toFixed(2) + "%";
 
     // Update card highlights only when something actually changed
