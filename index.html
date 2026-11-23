@@ -90,13 +90,13 @@ h1{margin:0;font:800 clamp(1.2rem,2.6vw,1.9rem)/1.15 var(--display);letter-spaci
 .date-bn,.date-hb{font-family:"Noto Sans Bengali","Segoe UI",system-ui,sans-serif}
 @media (max-width:820px){
   header{grid-template-columns:1fr auto;grid-template-areas:"brand brand" "suns dates";gap:1rem .75rem;text-align:center}
-  .brand{grid-area:brand}.suns{grid-area:suns;justify-self:start;gap:.8rem}.dates{grid-area:dates;justify-self:end;text-align:right}
+  .brand{grid-area:brand}.suns{grid-area:suns;justify-self:start;justify-content:center;gap:.8rem}.dates{grid-area:dates;justify-self:end;text-align:right}
   .logo{height:clamp(5.5rem,12vh,7rem);max-width:30vw}
   .sun-item{column-gap:.35rem}.sun-icon{width:1.25rem;height:1.25rem}
 }
 @media (max-width:440px){
   header{grid-template-columns:1fr;grid-template-areas:"brand" "suns" "dates";justify-items:center;gap:.85rem}
-  .suns{justify-self:center;gap:1.25rem}.dates{justify-self:center;text-align:center}
+  .suns{justify-self:center;justify-content:center;gap:1.25rem}.dates{justify-self:center;text-align:center}
 }
 
 /* ------------------------------------------------------------
@@ -201,7 +201,7 @@ h1{margin:0;font:800 clamp(1.2rem,2.6vw,1.9rem)/1.15 var(--display);letter-spaci
   .prayers{grid-template-columns:1fr}
 }
 
-@media (max-width:820px),(max-height:560px){main{min-height:0;padding-bottom:3.5rem}.clock{flex:none;margin:1.5rem 0}.next{margin-top:.5rem}}  /* phones and short windows: allow scrolling */
+@media (max-width:820px),(max-height:560px){main{min-height:0;padding-bottom:1rem}body .credit{position:static;padding:0 1rem 1rem}   /* phones: the footer scrolls with the page (body .credit beats the fixed footer rule below) */.clock{flex:none;margin:1.5rem 0}.next{margin-top:.5rem}}  /* phones and short windows: allow scrolling */
 /* PORTRAIT DIGITAL SIGNAGE:
    Keep the same content order and alignment as the mobile layout.
    Typography and spacing may scale up for a large portrait display, but
@@ -430,8 +430,8 @@ var SETTINGS = {
   /* ---- 11. Footer line ------------------------------------------- */
   // Small line at the bottom of the page. Leave a value empty ("") to hide it.
   developedBy: "BCPCL ICT",                                       // bottom left:  "Developed by BCPCL ICT"
-  version: "1.6",                                                 // bottom right: "Version: 1.6 (...)"
-  lastUpdated: "03:33 PM \u00b7 Sunday \u00b7 22 November 2026"     // date of this version, shown in brackets after the version
+  version: "1.7",                                                 // bottom right: "Version: 1.7 (...)"
+  lastUpdated: "02:47 PM \u00b7 Monday \u00b7 23 November 2026"     // date of this version, shown in brackets after the version
 };
 /* ==============================================================
    END OF SETTINGS. You do not need to change anything below.
